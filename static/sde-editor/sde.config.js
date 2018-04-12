@@ -2,8 +2,6 @@
 默认配置项
 */
 
-
-;
 (function() {
   /**
    * 编辑器资源文件根路径。它所表示的含义是：以编辑器实例化页面为当前路径，指向编辑器资源文件（即dialog等文件夹）的路径。
@@ -13,12 +11,12 @@
    * 因此，UEditor提供了针对不同页面的编辑器可单独配置的根路径，具体来说，在需要实例化编辑器的页面最顶部写上如下代码即可。当然，需要令此处的URL等于对应的配置。
    * window.UEDITOR_HOME_URL = "/xxxx/xxxx/"
    */
-  var URL = window.UEDITOR_HOME_URL || getUEBasePath()
-
+  var URL = window.UEDITOR_HOME_URL || getUEBasePath();
+  URL = URL + 'static/sde-editor/';
   /*
   SDE_CONFIG 配置项
   */
-  window.ISDEBUGGER = true
+  window.ISDEBUGGER = true;
   window.SDE_CONFIG = {
     HOME_URL: URL,
     HOME_URL_DIALOGS: URL + 'dialogs/',
@@ -27,10 +25,13 @@
     //CONTROL_TEMPLATES: [],// 这个删除
     //PLUGINS: [], // 新增组件扩展接口，这里可以扩展组件
     TOOLBAR_PLUGINS: [], //todo 改用这个
-    TABLE_STYLES: [{ name: 'sde-tb-solid', title: '实线', label: '实线1' }, { name: 'sde-tb-dotted', title: '虚线' }], // 默认提供2中表格样式
-    DEFAULT_FONT_SIZE: 12
-      //defaultFontSize: 12 // 默认字体为16
-  }
+    TABLE_STYLES: [
+      { name: 'sde-tb-solid', title: '实线', label: '实线1' },
+      { name: 'sde-tb-dotted', title: '虚线' },
+    ], // 默认提供2中表格样式
+    DEFAULT_FONT_SIZE: 12,
+    //defaultFontSize: 12 // 默认字体为16
+  };
 
   /**
    * 配置项主体。注意，此处所有涉及到路径的配置别遗漏URL变量。
@@ -47,56 +48,65 @@
     wordCount: false, // 关闭字数统计
     elementPathEnabled: false, // 关闭elementPath
     autoClearinitialContent: false,
-    enableAutoSave: false // 关闭自动保存
-  }
+    enableAutoSave: false, // 关闭自动保存
+  };
 
   function getUEBasePath(docUrl, confUrl) {
-    return getBasePath(docUrl || self.document.URL || self.location.href, confUrl || getConfigFilePath())
+    return getBasePath(
+      docUrl || self.document.URL || self.location.href,
+      confUrl || getConfigFilePath(),
+    );
   }
 
   function getConfigFilePath() {
-    var configPath = document.getElementsByTagName('script')
+    var configPath = document.getElementsByTagName('script');
 
-    return configPath[configPath.length - 1].src
+    return configPath[configPath.length - 1].src;
   }
 
   function getBasePath(docUrl, confUrl) {
-    var basePath = confUrl
+    var basePath = confUrl;
 
     if (/^(\/|\\\\)/.test(confUrl)) {
-      basePath = /^.+?\w(\/|\\\\)/.exec(docUrl)[0] + confUrl.replace(/^(\/|\\\\)/, '')
+      basePath = /^.+?\w(\/|\\\\)/.exec(docUrl)[0] + confUrl.replace(/^(\/|\\\\)/, '');
     } else if (!/^[a-z]+:/i.test(confUrl)) {
-      docUrl = docUrl.split('#')[0].split('?')[0].replace(/[^\\\/]+$/, '')
+      docUrl = docUrl
+        .split('#')[0]
+        .split('?')[0]
+        .replace(/[^\\\/]+$/, '');
 
-      basePath = docUrl + '' + confUrl
+      basePath = docUrl + '' + confUrl;
     }
 
-    return optimizationPath(basePath)
+    return optimizationPath(basePath);
   }
 
   function optimizationPath(path) {
     var protocol = /^[a-z]+:\/\//.exec(path)[0],
       tmp = null,
-      res = []
+      res = [];
 
-    path = path.replace(protocol, '').split('?')[0].split('#')[0]
+    path = path
+      .replace(protocol, '')
+      .split('?')[0]
+      .split('#')[0];
 
-    path = path.replace(/\\/g, '/').split(/\//)
+    path = path.replace(/\\/g, '/').split(/\//);
 
-    path[path.length - 1] = ''
+    path[path.length - 1] = '';
 
     while (path.length) {
       if ((tmp = path.shift()) === '..') {
-        res.pop()
+        res.pop();
       } else if (tmp !== '.') {
-        res.push(tmp)
+        res.push(tmp);
       }
     }
 
-    return protocol + res.join('/')
+    return protocol + res.join('/');
   }
 
   window.UE = {
-    getUEBasePath: getUEBasePath
-  }
-})()
+    getUEBasePath: getUEBasePath,
+  };
+})();
