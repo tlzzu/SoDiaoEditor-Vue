@@ -12,11 +12,11 @@
    * window.UEDITOR_HOME_URL = "/xxxx/xxxx/"
    */
   var URL = window.UEDITOR_HOME_URL || getUEBasePath();
-  // if (URL.endsWith('static/js/')) {
-  //   URL = URL.replace('static/js/', 'static/sdeEditor/');
-  // } else { 
-  //   URL = URL + 'static/sdeEditor/';
-  // }
+  if (URL.endsWith('static/js/')) {
+    URL = URL.replace('static/js/', 'static/sdeEditor/');
+  } else {
+    URL = URL + 'static/sdeEditor/';
+  }
   /*
   SDE_CONFIG 配置项
   */
@@ -25,7 +25,7 @@
     HOME_URL: URL,
     HOME_URL_DIALOGS: URL + 'dialogs/',
     EDITOR_URL: URL + 'js/sde-ie8-editor.js',
-    PAGE_CONFIG: [{//打印纸张定义
+    PAGE_CONFIG: [{ //打印纸张定义
       name: 'A3',
       width: 1123,
       height: 1588,
