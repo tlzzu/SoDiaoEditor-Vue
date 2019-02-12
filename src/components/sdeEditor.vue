@@ -651,7 +651,7 @@ export default {
     //todo 这里可以尝试调用this.sde的各种方法
   },
   beforeDestroy() {
-    this.sde.__ue__.destroy();
+    this.sde.destroy();
   }
 }
 </script>
